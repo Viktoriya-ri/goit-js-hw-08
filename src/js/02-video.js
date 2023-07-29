@@ -1,7 +1,6 @@
 import Player from '@vimeo/player';
 import throttle from 'lodash.throttle';
 
-const TIME_KEY = 'videoplayer-current-time';
 const iframe = document.querySelector('iframe');
 const player = new Player(iframe, {
   loop: true,
@@ -9,10 +8,16 @@ const player = new Player(iframe, {
   quality: '1080p',
 });
 
-const getCurrentTime = function (currentTime) {
-  const seconds = currentTime.seconds;
-  localStorage.setItem(TIME_KEY, JSON.stringify(seconds));
+const onPlay = function(data) {
+    localStorage.setItem('videoplayer-current-time', data.seconds)
 };
 
-player.on('timeupdate', throlle(getCurrentTime, 1000));
-player.setCurrentTime(JSON.parse(localStorage.getItem(TIME_KEY)) || 0);
+player.on('timeupdate', throttle(onPlay, 1000));
+player.setCurrentTime(JSON.parse(localStorage.getItem("videoplayer-current-time")) || 0);
+
+player.setColor('#45a247').then(function(color) {
+    // the color that was set
+}).catch(function(error) {
+    // an error occurred setting the color
+
+});
