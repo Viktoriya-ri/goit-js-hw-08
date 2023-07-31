@@ -4,16 +4,23 @@ const form = document.querySelector('.feedback-form');
 
 const LS_KEY = 'feedback-form-state';
 
-form.addEventListener('input', throttle(onInputData, 500));
-form.addEventListener('submit', onFormSubmit);
+const refs = {
+  email: document.querySelector('input'),
+  message: document.querySelector('textarea'),
+}
+refs.addEventListener('input', throttle(onInputData, 500));
+refs.addEventListener('submit', onFormSubmit);
 
-let dataForm = JSON.parse(localStorage.getItem(LS_KEY)) || {};
+let dataForm = {
+  email: '',
+  message: '',
+};
 
-const { email, message } = form.elements;
 reloadPage();
 
 function onInputData(evt) {
-  dataForm = { email: email.value, message: message.value };
+  dataForm[evt.target.name] = evt.target.value;
+  localStorage.setItem(LS_KEY, JSON.stringify(dataForm))
 }
 
 function reloadPage() {
