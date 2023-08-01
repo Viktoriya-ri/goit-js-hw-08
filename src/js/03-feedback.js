@@ -24,7 +24,7 @@ function reloadPage() {
 }
 
 function onFormSubmit(evt) {
-  e.preventDefault();
+  evt.preventDefault();
   console.log({ email: email.value, message: message.value });
 
   if (email.value === '' || message.value === '') {
@@ -32,6 +32,6 @@ function onFormSubmit(evt) {
   }
 
   localStorage.removeItem(LS_KEY);
-  e.currentTarget.reset();
+  evt.currentTarget.reset();
   dataForm = {};
 }
